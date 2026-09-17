@@ -11,9 +11,6 @@ permissions:
 
 jobs:
   process-training-suggestion:
-    # Only run for issues created with the training-suggestion label
-    if: contains(github.event.issue.labels.*.name, 'training-suggestion')
-
     runs-on: ubuntu-latest
 
     steps:
