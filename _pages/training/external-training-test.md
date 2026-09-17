@@ -29,7 +29,7 @@ classes: wide
     </div>
 
     <a
-        href="https://github.com/mzhc13/SHAREing-DRI.github.io/training/suggest-training/"
+        href="https://mzhc13.github.io/SHAREing-DRI.github.io//training/suggest-training"
         class="submit-course-button"
         target="_blank"
         rel="noopener"
