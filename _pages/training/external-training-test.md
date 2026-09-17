@@ -18,65 +18,23 @@ classes: wide
 
 
 <div class="submit-course-box">
+    <div class="submit-course-content">
+        <span class="submit-course-icon">＋</span>
 
-    <div>
-        <strong>Know of a training course we should include?</strong>
-
-        <p>
-            Suggest an external training opportunity for the SHAREing catalogue.
-        </p>
-    </div>
-
-        <button
-            type="button"
-            class="submit-course-button"
-            id="open-suggest-course"
-        >
-            Suggest a course →
-        </button>
-</div>
-
-
-<!-- =========================================================
-     SUGGEST COURSE MODAL
-========================================================= -->
-
-<div
-    id="suggest-course-modal"
-    class="suggest-course-modal"
-    aria-hidden="true"
->
-    <div class="suggest-course-overlay" id="suggest-course-overlay"></div>
-
-    <div
-        class="suggest-course-dialog"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="suggest-course-title"
-    >
-
-        <div class="suggest-course-header">
-            <h2 id="suggest-course-title">
-                Suggest a training course
-            </h2>
-
-            <button
-                type="button"
-                class="suggest-course-close"
-                id="close-suggest-course"
-                aria-label="Close"
-            >
-                ×
-            </button>
+        <div>
+            <strong>Suggest a new course</strong>
+            <p>Know of a useful training opportunity? Add it to the catalogue.</p>
         </div>
-
-        <iframe
-            id="suggest-course-frame"
-            src=""
-            title="Suggest a training course"
-        ></iframe>
-
     </div>
+
+<button
+    type="button"
+    class="submit-course-button"
+    onclick="window.location.href='https://mzhc13.github.io/SHAREing-DRI.github.io/training/suggest-training'"
+>
+    Add your course →
+</button>
+
 </div>
 
 <!-- =========================================================
@@ -182,104 +140,107 @@ classes: wide
 
 
 <style>
-
 /* =========================================================
-   SUGGEST COURSE MODAL
+   SUGGEST A COURSE
 ========================================================= */
 
-.suggest-course-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-
-    display: none;
-    align-items: center;
-    justify-content: center;
-
-    padding: 1rem;
-}
-
-.suggest-course-modal.show {
-    display: flex;
-}
-
-.suggest-course-overlay {
-    position: absolute;
-    inset: 0;
-
-    background: rgba(15, 42, 58, .65);
-    backdrop-filter: blur(3px);
-}
-
-.suggest-course-dialog {
-    position: relative;
-    z-index: 1;
-
-    width: min(900px, 100%);
-    height: min(850px, 92vh);
-
-    display: flex;
-    flex-direction: column;
-
-    background: white;
-    border-radius: 18px;
-
-    box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
-
-    overflow: hidden;
-}
-
-.suggest-course-header {
-    flex-shrink: 0;
-
+.submit-course-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.5rem;
 
-    padding: .75rem 1.25rem;
+    margin: 1rem 0 1.5rem;
+    padding: 1rem 1.25rem;
 
-    background: #421456;
-    color: white;
+    background: #f3e8f5;
+    border: 1px solid #e5cce8;
+    border-radius: 14px;
 }
 
-.suggest-course-header h2 {
-    margin: 0;
-    color: white;
-    font-size: 1rem;
+.submit-course-content {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
 }
 
-.suggest-course-close {
-    width: 34px;
-    height: 34px;
-
+.submit-course-icon {
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border: none;
-    border-radius: 50%;
+    width: 34px;
+    height: 34px;
 
-    background: transparent;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    background: #421456;
     color: white;
 
-    font-size: 1.7rem;
-    line-height: 1;
-
-    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 400;
 }
 
-.suggest-course-close:hover {
-    background: rgba(255, 255, 255, .15);
+.submit-course-content strong {
+    display: block;
+    margin-bottom: .15rem;
+
+    color: #421456;
+    font-size: .8rem;
 }
 
-.suggest-course-dialog iframe {
-    flex: 1;
+.submit-course-content p {
+    margin: 0;
 
-    width: 100%;
-    min-height: 0;
+    color: #475569;
+    font-size: .65rem;
+}
+
+.submit-course-button {
+    flex-shrink: 0;
+
+    padding: .6rem 1rem;
 
     border: none;
-    background: white;
+    border-radius: 999px;
+
+    background: #421456;
+    color: white;
+
+    font-size: .65rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
+}
+
+.submit-course-button:hover {
+    background: #68246d;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.submit-course-button:focus-visible {
+    outline: 2px solid #421456;
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+
+    .submit-course-box {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: .75rem;
+    }
+
+    .submit-course-button {
+        width: 100%;
+    }
+
 }
 
 
@@ -1519,9 +1480,6 @@ const suggestCourseOverlay =
 
 const suggestCourseFrame =
     document.getElementById("suggest-course-frame");
-
-const suggestCourseUrl =
-    "{{ '/training/suggest-training' | relative_url }}";
 
 
 function openSuggestCourseModal() {
