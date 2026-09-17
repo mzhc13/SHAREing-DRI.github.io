@@ -23,20 +23,60 @@ classes: wide
         <strong>Know of a training course we should include?</strong>
 
         <p>
-            Suggest an external training opportunity for the SHAREing
-            catalogue.
+            Suggest an external training opportunity for the SHAREing catalogue.
         </p>
     </div>
 
-    <a
-        href="https://mzhc13.github.io/SHAREing-DRI.github.io//training/suggest-training"
-        class="submit-course-button"
-        target="_blank"
-        rel="noopener"
-    >
-        Suggest a course →
-    </a>
+        <button
+            type="button"
+            class="submit-course-button"
+            id="open-suggest-course"
+        >
+            Suggest a course →
+        </button>
+</div>
 
+
+<!-- =========================================================
+     SUGGEST COURSE MODAL
+========================================================= -->
+
+<div
+    id="suggest-course-modal"
+    class="suggest-course-modal"
+    aria-hidden="true"
+>
+    <div class="suggest-course-overlay" id="suggest-course-overlay"></div>
+
+    <div
+        class="suggest-course-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="suggest-course-title"
+    >
+
+        <div class="suggest-course-header">
+            <h2 id="suggest-course-title">
+                Suggest a training course
+            </h2>
+
+            <button
+                type="button"
+                class="suggest-course-close"
+                id="close-suggest-course"
+                aria-label="Close"
+            >
+                ×
+            </button>
+        </div>
+
+        <iframe
+            id="suggest-course-frame"
+            src=""
+            title="Suggest a training course"
+        ></iframe>
+
+    </div>
 </div>
 
 <!-- =========================================================
@@ -143,59 +183,132 @@ classes: wide
 
 <style>
 
+/* =========================================================
+   SUGGEST COURSE MODAL
+========================================================= */
 
-.submit-course-box {
+.suggest-course-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1rem;
+}
+
+.suggest-course-modal.show {
+    display: flex;
+}
+
+.suggest-course-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(15, 42, 58, .65);
+    backdrop-filter: blur(3px);
+}
+
+.suggest-course-dialog {
+    position: relative;
+    z-index: 1;
+
+    width: min(900px, 100%);
+    height: min(850px, 92vh);
+
+    display: flex;
+    flex-direction: column;
+
+    background: white;
+    border-radius: 18px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+
+    overflow: hidden;
+}
+
+.suggest-course-header {
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
 
-    margin: 1rem 0 1.5rem;
-    padding: 1rem 1.25rem;
-
-    background: #f3e8f5;
-    border: 1px solid #d8b8dc;
-    border-radius: 16px;
-}
-
-.submit-course-box strong {
-    display: block;
-    color: #421456;
-    font-size: .75rem;
-}
-
-.submit-course-box p {
-    margin: .25rem 0 0;
-    color: #475569;
-    font-size: .6rem;
-}
-
-.submit-course-button {
-    flex-shrink: 0;
-
-    padding: .65rem 1rem;
+    padding: .75rem 1.25rem;
 
     background: #421456;
-    color: white !important;
-
-    border-radius: 999px;
-
-    font-size: .65rem;
-    font-weight: 700;
-    text-decoration: none !important;
+    color: white;
 }
 
-.submit-course-button:hover {
-    background: #67136d;
+.suggest-course-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 1rem;
 }
+
+.suggest-course-close {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: white;
+
+    font-size: 1.7rem;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.suggest-course-close:hover {
+    background: rgba(255, 255, 255, .15);
+}
+
+.suggest-course-dialog iframe {
+    flex: 1;
+
+    width: 100%;
+    min-height: 0;
+
+    border: none;
+    background: white;
+}
+
+
+/* Prevent the page behind the modal from scrolling */
+
+body.modal-open {
+    overflow: hidden;
+}
+
 
 @media (max-width: 600px) {
-    .submit-course-box {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
 
+    .suggest-course-modal {
+        padding: 0;
+    }
+
+    .suggest-course-dialog {
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+
+        border-radius: 0;
+    }
+
+    .suggest-course-header {
+        padding: .7rem 1rem;
+    }
+
+}
 
 /* =========================================================
    CALENDAR LEGEND
@@ -1387,6 +1500,96 @@ topicGroups["Other 📦"].push(
     ...Array.from(extraTopics).sort()
 );
 
+
+// =============================================================================
+// SUGGEST COURSE MODAL
+// =============================================================================
+
+const suggestCourseModal =
+    document.getElementById("suggest-course-modal");
+
+const openSuggestCourseButton =
+    document.getElementById("open-suggest-course");
+
+const closeSuggestCourseButton =
+    document.getElementById("close-suggest-course");
+
+const suggestCourseOverlay =
+    document.getElementById("suggest-course-overlay");
+
+const suggestCourseFrame =
+    document.getElementById("suggest-course-frame");
+
+const suggestCourseUrl =
+    "{{ '/training/suggest-training' | relative_url }}";
+
+
+function openSuggestCourseModal() {
+
+    suggestCourseFrame.src = suggestCourseUrl;
+
+    suggestCourseModal.classList.add("show");
+    suggestCourseModal.setAttribute("aria-hidden", "false");
+
+    document.body.classList.add("modal-open");
+
+    closeSuggestCourseButton.focus();
+}
+
+
+function closeSuggestCourseModal() {
+
+    suggestCourseModal.classList.remove("show");
+    suggestCourseModal.setAttribute("aria-hidden", "true");
+
+    document.body.classList.remove("modal-open");
+
+    // Remove the iframe when closed so the form starts cleanly
+    // next time, while localStorage still preserves the draft.
+    suggestCourseFrame.src = "";
+}
+
+
+if (openSuggestCourseButton) {
+
+    openSuggestCourseButton.addEventListener(
+        "click",
+        openSuggestCourseModal
+    );
+
+}
+
+
+if (closeSuggestCourseButton) {
+
+    closeSuggestCourseButton.addEventListener(
+        "click",
+        closeSuggestCourseModal
+    );
+
+}
+
+
+if (suggestCourseOverlay) {
+
+    suggestCourseOverlay.addEventListener(
+        "click",
+        closeSuggestCourseModal
+    );
+
+}
+
+
+document.addEventListener("keydown", event => {
+
+    if (
+        event.key === "Escape" &&
+        suggestCourseModal.classList.contains("show")
+    ) {
+        closeSuggestCourseModal();
+    }
+
+});
 
 // =============================================================================
 // GROUP COURSES BY TOPIC
