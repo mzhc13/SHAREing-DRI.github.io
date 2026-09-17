@@ -15,21 +15,12 @@ Choosing GPU Programming Approaches,NHR@FAU,Scheduled (online),"GPU",9-10 Novemb
 Node-Level Performance Engineering,NHR@FAU,Scheduled (online),"GPU",1-3 December 2026,Online,https://hpc.fau.de/teaching/tutorials-and-courses/performance-engineering/nlpe/
 
 
-Using Jupyter Notebooks on HPC,NHR@GWDG,Online,,https://academy.gwdg.de/p/event.xhtml?id=69f72823e3e2557f1b42c63e
-Ansys on Cluster and Post-Processing of Simulation Results,NHR@GWDG,Scheduled (online),User-specific,5 October 2026,Online,https://academy.gwdg.de/p/event.xhtml?id=69f72bc8e3e2557f1b42c646
-
-HPC Cafe,NHR@KIT,Other,"Seminar, Community",Rolling basis,Online,https://www.nhr.kit.edu/events.php/event/60386#calendar_top
-
-
-
 High-Performance Scientific Computing in C++ ,JSC,Scheduled (online),"C++",12-15 October 2026,Online,https://www.fz-juelich.de/en/jsc/news/events/training-courses/training-courses-2026/hpc-cplusplus
 Parallel I/O and Portable Data Formats,JSC,Scheduled (online),"Parallelism, I/O",26-28 October 2026,Online,https://www.fz-juelich.de/en/jsc/news/events/training-courses/training-courses-2026/parallel-io
 Directive-based GPU Programming with OpenACC,JSC,Scheduled (online),"Parallelism, GPU, OpenACC",3-5 November 2026,Online,https://www.fz-juelich.de/en/jsc/news/events/training-courses/training-courses-2026/gpu-openacc
 
-Modern C++ Software Design (Advanced) ,HLRS,Scheduled (hybrid),"C++",17-20 November 2026,Stuttgart (Germany),https://www.hlrs.de/training/2026/cpp4
 
-Elements of Supercomputing,CSC,Online (self-service),"Parallelism, intro to HPC",none,none,https://research.csc.fi/training/elements-of-supercomputing/
-Containers in Supercomputing Environment,CSC,Scheduled (online),"Parallel-practice, Containers",24-26 November 2026,Online,https://research.csc.fi/training/containers-in-supercomputing-environment-2/
+
 
 How to write a good application,UKRI,Online (self-service),"Professional Skills",none,none,https://www.ukri.org/councils/esrc/guidance-for-applicants/how-to-write-a-good-application/
 
@@ -42,9 +33,8 @@ The Unix Shell,Library Carpentry,Online (self-service),"Unix",none,none,https://
 Message Passing programming with MPI,EPCC/ARCHER2,Scheduled (in-person),"MPI",9-10 September 2026,Durham,https://www.archer2.ac.uk/training/courses/260909-mpi/
 Running GeoChemFoam on HPC: From Micro-CT Images to Remote Visualisation,EPCC/ARCHER2,Scheduled (online),"Other",16 September 2026,Online,https://www.archer2.ac.uk/training/courses/260916-geochemfoam-vt/
 Message-Passing with MPI,EPCC/ARCHER2,Online (self-service),"Parallelism, MPI",none,none,https://www.archer2.ac.uk/training/courses/210000-mpi-self-service/
-Hands-on Introduction to HPC,EPCC/ARCHER2,Online (self-service),"intro to HPC",none,none,https://www.archer2.ac.uk/training/courses/240000-intro-hpc-self-service/
+Hands-on Introduction to HPC,EPCC/ARCHER2,Online (self-service),"Intro to HPC",none,none,https://www.archer2.ac.uk/training/courses/240000-intro-hpc-self-service/
 Shared Memory Programming with OpenMP,EPCC/ARCHER2,Online (self-service),"OpenMP",none,none,https://www.archer2.ac.uk/training/courses/210000-openmp-self-service/
 
 
-
-ERROR,ERROR,"C++",Scheduled (online),"C++",10-11 July 2026,Online,https://www.fz-juelich.de/en/jsc/news/events/training-courses/training-courses-2026/hpc-cplusplus
+BSC Training Course: It's the memory stupid!,BSC,Scheduled (hybrid),"Other",24 February 2027,Barcelona,https://www.bsc.es/education/training/bsc-training/bsc-training-course-its-the-memory-stupid-0

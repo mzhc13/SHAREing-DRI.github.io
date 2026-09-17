@@ -1242,16 +1242,19 @@ const topicGroups = {
     "Languages 💬": [
         "Fortran",
         "C++",
+        "C/C++",
         "Julia",
         "Python"
     ],
 
     "Parallelism 🔀": [
+        "Parallelism",
         "OpenMP",
         "MPI"
     ],
 
     "GPU 🎮": [
+        "GPU",
         "OpenMP offload",
         "OpenACC",
         "CUDA",
