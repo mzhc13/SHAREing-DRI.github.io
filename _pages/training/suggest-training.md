@@ -2,7 +2,6 @@
 layout: single
 title: "Suggest a Training Course"
 permalink: /training/suggest-training
-search: false
 ---
 
 <style>
@@ -252,11 +251,11 @@ document.getElementById("training-suggestion-form").addEventListener("submit", f
 
 Thank you for suggesting a training course for the SHAREing External Training Catalogue!`;
 
-  const githubUrl =
-    "https://github.com/mzhc13/SHAREing-DRI.github.io/issues/new" +
-    "?title=" + encodeURIComponent(issueTitle) +
-    "&body=" + encodeURIComponent(issueBody) +
-    "&labels=training-suggestion";
+const githubUrl =
+  "https://github.com/mzhc13/SHAREing-DRI.github.io/issues/new" +
+  "?title=" + encodeURIComponent(issueTitle) +
+  "&body=" + encodeURIComponent(issueBody);
+
 
   window.location.href = githubUrl;
 });
