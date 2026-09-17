@@ -254,9 +254,9 @@ Thank you for suggesting a training course for the SHAREing External Training Ca
 const githubUrl =
   "https://github.com/mzhc13/SHAREing-DRI.github.io/issues/new" +
   "?title=" + encodeURIComponent(issueTitle) +
-  "&body=" + encodeURIComponent(issueBody);
+  "&body=" + encodeURIComponent(issueBody) +
+  "&labels=training-suggestion";
 
-
-  window.location.href = githubUrl;
+window.location.href = githubUrl;
 });
 </script>
