@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -128,8 +128,8 @@ jobs:
               reader = csv.DictReader(f)
 
               for row in reader:
-                  existing_title = row.get("title", "").strip().lower()
-                  existing_url = row.get("url", "").strip().lower()
+                  existing_title = (row.get("title") or "").strip().lower()
+                  existing_url = (row.get("url") or "").strip().lower()
 
                   if existing_title == title or (
                       url and existing_url == url
