@@ -1253,6 +1253,10 @@ const topicGroups = {
         "MPI"
     ],
 
+    "Performance 🚀": [
+    "Performance",
+    ],
+
     "GPU 🎮": [
         "GPU",
         "OpenMP offload",
