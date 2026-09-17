@@ -1269,8 +1269,7 @@ classes: wide
 <script>
 
 const courses = {{ site.data["external-training"] | jsonify }};
-
-
+const topicGroups = {{ site.data["training-topics"] | jsonify }};
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
@@ -1314,49 +1313,6 @@ const formatInfo = {
 };
 
 
-const topicGroups = {
-    "Languages 💬": [
-        "Fortran",
-        "C++",
-        "C/C++",
-        "Julia",
-        "Python"
-    ],
-
-    "Parallelism 🔀": [
-        "Parallelism",
-        "OpenMP",
-        "MPI"
-    ],
-
-    "Performance 🚀": [
-    "Performance",
-    ],
-
-    "GPU 🎮": [
-        "GPU",
-        "OpenMP offload",
-        "OpenACC",
-        "CUDA",
-        "HIP"
-    ],
-
-    "Performance 📊": [
-        "Performance Engineering",
-        "Performance Analysis",
-        "Tools"
-    ],
-
-    "Other 📦": [
-        "Containers",
-        "Professional Skills"
-    ],
-
-    "Community 🎉": [
-        "Seminar",
-        "Community"
-    ]
-};
 
 
 // =============================================================================
