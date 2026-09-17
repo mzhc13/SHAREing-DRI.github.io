@@ -1,0 +1,95 @@
+name: Suggest a training course
+description: Suggest an external training course for the SHAREing catalogue
+title: "[Training suggestion] "
+labels:
+  - training-suggestion
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a training course for the SHAREing External Training Catalogue!
+
+        Please provide the information below. Submissions will be reviewed before being added to the catalogue.
+
+  - type: input
+    id: title
+    attributes:
+      label: Course title
+      description: The name of the training course.
+      placeholder: Introduction to CUDA C/C++
+    validations:
+      required: true
+
+  - type: input
+    id: organisation
+    attributes:
+      label: Organisation
+      description: The organisation providing the course.
+      placeholder: NHR@FAU
+    validations:
+      required: true
+
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      options:
+        - Online (self-service)
+        - Scheduled (online)
+        - Scheduled (hybrid)
+        - Scheduled (in-person)
+        - Upcoming
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: tags
+    attributes:
+      label: Topics / tags
+      description: |
+        Add relevant topics separated by commas.
+        For example: CUDA, GPU, C/C++
+      placeholder: CUDA, GPU, C/C++
+    validations:
+      required: true
+
+  - type: input
+    id: dates
+    attributes:
+      label: Dates
+      description: |
+        Enter the course dates, or "Rolling basis", "Self-paced", etc.
+      placeholder: 17-18 September 2026
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: |
+        For example: Online, Durham, UK, Munich, Germany.
+      placeholder: Online
+    validations:
+      required: true
+
+  - type: input
+    id: url
+    attributes:
+      label: Course URL
+      description: The public webpage for the course.
+      placeholder: https://example.org/course
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: I have checked that this course is not already listed in the catalogue.
+          required: true
+        - label: I have provided a public course webpage.
+          required: true

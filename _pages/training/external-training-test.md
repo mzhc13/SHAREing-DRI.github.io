@@ -17,6 +17,28 @@ classes: wide
 </section>
 
 
+<div class="submit-course-box">
+
+    <div>
+        <strong>Know of a training course we should include?</strong>
+
+        <p>
+            Suggest an external training opportunity for the SHAREing
+            catalogue.
+        </p>
+    </div>
+
+    <a
+        href="https://github.com/mzhc13/SHAREing-DRI.github.io/training/suggest-training/"
+        class="submit-course-button"
+        target="_blank"
+        rel="noopener"
+    >
+        Suggest a course →
+    </a>
+
+</div>
+
 <!-- =========================================================
      TRAINING CALENDAR
 ========================================================= -->
@@ -120,6 +142,60 @@ classes: wide
 
 
 <style>
+
+
+.submit-course-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    margin: 1rem 0 1.5rem;
+    padding: 1rem 1.25rem;
+
+    background: #f3e8f5;
+    border: 1px solid #d8b8dc;
+    border-radius: 16px;
+}
+
+.submit-course-box strong {
+    display: block;
+    color: #421456;
+    font-size: .75rem;
+}
+
+.submit-course-box p {
+    margin: .25rem 0 0;
+    color: #475569;
+    font-size: .6rem;
+}
+
+.submit-course-button {
+    flex-shrink: 0;
+
+    padding: .65rem 1rem;
+
+    background: #421456;
+    color: white !important;
+
+    border-radius: 999px;
+
+    font-size: .65rem;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+.submit-course-button:hover {
+    background: #67136d;
+}
+
+@media (max-width: 600px) {
+    .submit-course-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 
 /* =========================================================
    CALENDAR LEGEND
