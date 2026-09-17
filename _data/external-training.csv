@@ -26,8 +26,8 @@ How to write a good application,UKRI,Online (self-service),"Professional Skills"
 
 Programming with Python,Software Carpentry,Online (self-service),"Python",https://swcarpentry.github.io/python-novice-inflammation/
 Plotting and Programming in Python,Software Carpentry,Online (self-service),"Python",http://swcarpentry.github.io/python-novice-gapminder
-Image Processing with Python,Software Carpentry,Online (self-service),"Python,https://datacarpentry.org/image-processing/
-The Unix Shell,Library Carpentry,Online (self-service),"Unix",none,none,https://librarycarpentry.org/lc-shell/
+Image Processing with Python,Software Carpentry,Online (self-service),"Python",https://datacarpentry.org/image-processing/
+The Unix Shell,Library Carpentry,Online (self-service),"Unix",https://librarycarpentry.org/lc-shell/
 
 
 Message Passing programming with MPI,EPCC/ARCHER2,Scheduled (in-person),"MPI",9-10 September 2026,Durham,https://www.archer2.ac.uk/training/courses/260909-mpi/
