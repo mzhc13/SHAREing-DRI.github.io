@@ -24,8 +24,8 @@ classes: wide
         <div>
             <strong>Suggest a new course</strong>
             <p>Know of a useful training opportunity? Add it to the catalogue.</p>
-        </div>
-    </div>
+   </div>
+ </div>
 
 <button
     type="button"
@@ -1341,9 +1341,42 @@ body.modal-open {
 
 
 <script>
-
 const courses = {{ site.data["external-training"] | jsonify }};
 const topicGroups = {{ site.data["training-topics"] | jsonify }};
+
+
+
+const startOfToday = new Date();
+startOfToday.setHours(0, 0, 0, 0);
+
+function isPastCourse(course) {
+
+    if (
+        !course.dates ||
+        ![
+            "Scheduled (online)",
+            "Scheduled (hybrid)",
+            "Scheduled (in-person)"
+        ].includes(course.format)
+    ) {
+        return false;
+    }
+
+    const parsed = parseCourseDate(course.dates);
+
+    // If the date can't be parsed, keep the course visible
+    if (!parsed) {
+        return false;
+    }
+
+    // A course ending today still counts as current
+    return parsed.end < startOfToday;
+
+}
+
+
+const upcomingCourses = courses.filter(course => !isPastCourse(course));
+
 // =============================================================================
 // CONFIGURATION
 // =============================================================================
@@ -1435,12 +1468,11 @@ const knownTopics = new Set(
 // Find tags that are not currently assigned to a group.
 const extraTopics = new Set();
 
-courses.forEach(course => {
+upcomingCourses.forEach(course => {
 
     if (!course.tags) {
         return;
     }
-
     course.tags
         .split(",")
         .map(tag => tag.trim())
@@ -1555,7 +1587,7 @@ document.addEventListener("keydown", event => {
 
 const groupedCourses = {};
 
-courses.forEach(course => {
+upcomingCourses.forEach(course => {
 
     const topics = course.tags
         ? course.tags
