@@ -44,6 +44,7 @@ classes: wide
 </section>
 <section id="view-map" aria-label="Pathway map" hidden>
 <div class="map-bar">
+
 <div class="map-zoom">
 <button type="button" id="pathway-zoom-out" class="cat-btn cat-btn-icon" aria-label="Zoom out">−</button>
 <span id="pathway-zoom-indicator">100%</span>
@@ -51,12 +52,16 @@ classes: wide
 <button type="button" id="pathway-reset-view" class="cat-btn">Fit to view</button>
 <button type="button" id="auto-arrange" class="cat-btn" title="Put all courses back in a single row">Auto-arrange</button>
 </div>
+
 <div class="map-legend">
 <span><svg width="36" height="10" aria-hidden="true"><line x1="1" y1="5" x2="35" y2="5" stroke="#940594" stroke-width="2.5" stroke-linecap="round"/></svg>Required</span>
 <span><svg width="36" height="10" aria-hidden="true"><line x1="1" y1="5" x2="35" y2="5" stroke="#940594" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 5"/></svg>Optional</span>
 </div>
 </div>
-<p class="map-hint">Drag cards to arrange them. Drag from a card's dots to connect two courses. Click a connector to make it optional, and click again to remove it.</p>
+<p class="map-hint">
+    Drag cards to arrange them. Ctrl/Cmd-click to select several cards and move them together.
+    Drag from a card's dots to connect two courses. Click a connector to make it optional, and click again to remove it.
+</p>
 <div id="pathway-map" class="pathway-map"></div>
 </section>
 </div>
@@ -95,7 +100,18 @@ classes: wide
 .cat {
     --brand: #940594; --brand-dark: #6f046f; --deep: #421456;
     --tint: #f7eef7; --tint-2: #efdcef;
-    --ink: #1f2937; --mut: #5b6472; --line: #e5e7eb; --soft: #f3f4f6;
+    --ink: #243855; --mut: #636d7c; --line: #e5e7eb; --soft: #f3f4f6;
+
+    /* ---------- Light blue---------- */
+
+    --b-light-back: #f1f6fb; --b-light-line:#31577a; --b-light-font: #31577a;
+    --b-light-back-hover: #e4eef7; --b-light-line-hover: #4b78a0;
+
+   /* ---------- Dark blue---------- */
+
+    --b-dark-back: #31577a; --b-dark-line: #31577a; --b-dark-font: #fff;
+    --b-dark-back-hover: #24415c; --b-dark-line-hover: #31577a;
+
     font-size: 15px; line-height: 1.5; color: var(--ink);
     margin: 0 0 32px;
     text-align: left;
@@ -135,8 +151,16 @@ classes: wide
 }
 .cat .cat-btn:hover:not(:disabled) { border-color: var(--brand); background: var(--tint); }
 .cat .cat-btn:disabled { opacity: .45; cursor: default; }
+
 .cat .cat-btn-primary { background: var(--brand); border-color: var(--brand); color: #fff; }
 .cat .cat-btn-primary:hover:not(:disabled) { background: var(--brand-dark); border-color: var(--brand-dark); }
+
+.cat .cat-btn-secondary { background: var(--b-dark-back); border-color: var(--b-dark-line); color: #fff; }
+.cat .cat-btn-secondary:hover:not(:disabled) { background: var(--b-dark-back-hover); border-color: var(--dark-line-hover); }
+
+.cat .cat-btn-third { background: var(--b-light-back); border-color: var(--b-light-line); color: var(--b-light-font); }
+.cat .cat-btn-third:hover:not(:disabled) { background: var(--b-light-back-hover); border-color: var(--dark-light-hover); }
+
 .cat .cat-btn-danger { color: #b42318; }
 .cat .cat-btn-danger:hover:not(:disabled) { border-color: #f04438; background: #fef3f2; }
 .cat .cat-btn-small { height: 32px; padding: 0 12px; font-size: 13px; }
@@ -154,7 +178,7 @@ classes: wide
 .cat .cat-main { min-width: 0; }
 
 /* ---------- Toolbar ---------- */
-.cat .cat-toolbar { position: sticky; top: 0; z-index: 20; padding: 0.5rem; background: #fff; border-bottom: 1px solid var(--line); border-radius: 8px;}
+.cat .cat-toolbar { position: flex; top: 0; z-index: 20; padding: 0.5rem; background: #fff; border-bottom: 1px solid var(--line); border-radius: 8px;}
 .cat .toolbar-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .cat .cat-tabs { display: flex; gap: 4px; overflow-x: auto; }
 .cat .cat-tab {
@@ -163,14 +187,14 @@ classes: wide
 }
 .cat .cat-tab:hover { color: var(--brand); }
 .cat .cat-tab.active { color: var(--brand); border-bottom-color: var(--brand); }
-.cat .filter-rows { padding: 12px 0 12px; }
+.cat .filter-rows { padding: 1rem; }
 .cat .cat-search {
     display: block; width: 100%; height: 42px; margin: 0 0 10px; padding: 0 14px;
     border: 1px solid #cfd4dc; border-radius: 8px; background: #fff; color: var(--ink);
     font-size: 15px; box-shadow: none;
 }
 .cat .cat-search:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(148,5,148,.15); }
-.cat .chip-row { display: flex; gap: 6px; margin-top: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; }
+.cat .chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: thin; margin-bottom: 0.3rem; }
 .cat .chip-row:empty { display: none; }
 .cat .chip {
     flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
@@ -180,6 +204,16 @@ classes: wide
 .cat .chip:hover { border-color: var(--brand); }
 .cat .chip.active { background: var(--brand); border-color: var(--brand); color: #fff; }
 .cat .chip-n { font-weight: 500; opacity: .75; }
+
+/* Topics */
+.cat #group-chips .chip { border-color: #d8b5dc; background: #f7eef7; color: #6f046f;}
+.cat #group-chips .chip:hover {border-color: #940594;background: #efdcef;}
+.cat #group-chips .chip.active { border-color: #940594;background: #940594; color: #fff;}
+/* Formats */
+.cat #format-chips {margin-top: 18px; padding-top: 18px;border-top: 1px solid var(--line);}
+.cat #format-chips .chip {border-color: #b9cde3; background: #f1f6fb; color: #31577a;}
+.cat #format-chips .chip:hover {border-color: #4b78a0; background: #e4eef7;}
+.cat #format-chips .chip.active {border-color: #31577a; background: #31577a; color: #fff;}
 
 /* ---------- Catalogue ---------- */
 .cat .board-status { margin: 16px 0 4px; color: var(--mut); font-size: 14px; min-height: 21px; }
@@ -229,38 +263,44 @@ classes: wide
 
 /* ---------- Curated pathways ---------- */
 .cat .view-intro { margin: 18px 0 16px; color: var(--mut); }
-.cat .cur-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+.cat .cur-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 16px; align-items: start; }
 .cat .cur-card { display: flex; flex-direction: column; gap: 10px; padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
-.cat .cur-card.is-loaded { border-color: var(--brand); background: var(--tint); }
+.cat .cur-card.is-loaded { border-color: var(--b-light-line); background: #fff; }
 .cat .cur-head { display: flex; align-items: flex-start; gap: 12px; }
-.cat .cur-icon { display: flex; flex: 0 0 40px; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--tint); font-size: 20px; }
-.cat .cur-title { font-size: 17px; line-height: 1.3; font-weight: 700; color: var(--deep); }
+.cat .cur-icon { display: flex; flex: 0 0 40px; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: #fff; font-size: 20px; border: 1px solid var(--b-dark-line); }
+.cat .cur-title { font-size: 17px; line-height: 1.3; font-weight: 700; color: var(--b-light-font); }
 .cat .cur-audience { margin-top: 2px; color: var(--mut); font-size: 13px; }
 .cat .cur-desc { color: var(--ink); font-size: 14px; }
 .cat .cur-stats { color: var(--mut); font-size: 13px; }
 .cat .cur-stats .partial { color: #b45309; }
-.cat .cur-loaded { display: none; color: var(--brand); font-weight: 700; }
+.cat .cur-loaded { display: none; color: var(--b-light-font); font-weight: 700; }
 .cat .cur-card.is-loaded .cur-loaded { display: inline; }
 .cat .cur-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.cat .cur-route summary { cursor: pointer; color: var(--brand); font-size: 14px; font-weight: 600; }
+.cat .cur-route summary { cursor: pointer; color: var(--b-light-font); font-size: 14px; font-weight: 600; }
 .cat .cur-steps { margin-top: 12px; }
 .cat .cur-step { position: relative; padding: 0 0 14px 34px; }
 .cat .cur-step::before { content: ""; position: absolute; left: 11px; top: 26px; bottom: 0; border-left: 2px solid var(--tint-2); }
 .cat .cur-step:last-child { padding-bottom: 0; }
 .cat .cur-step:last-child::before { display: none; }
-.cat .step-dot { position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 2px solid var(--brand); border-radius: 50%; background: #fff; color: var(--brand); font-size: 12px; font-weight: 700; }
-.cat .cur-step.in-pathway .step-dot { background: var(--brand); color: #fff; }
+.cat .step-dot { position: absolute; left: 0; top: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 2px solid var(--b-dark-line); border-radius: 50%; background: #fff; color: var(--b-dark-line); font-size: 12px; font-weight: 700; }
+.cat .cur-step.in-pathway .step-dot { background: var(--b-dark-back); color: #fff; }
 .cat .step-title { display: block; color: var(--ink); font-size: 14px; font-weight: 600; line-height: 1.35; }
 .cat a.step-title:hover { color: var(--brand); text-decoration: underline; }
 .cat .step-sub { color: var(--mut); font-size: 13px; }
 .cat .step-note { margin-top: 2px; color: #475569; font-size: 13px; font-style: italic; }
-.cat .step-optional { margin-top: 8px; padding: 8px 10px; border: 1px dashed #c58bc5; border-radius: 8px; background: #fdf9fd; }
+.cat .step-course {padding: 10px 12px; border: 1px solid var(--b-light-line); border-radius: 8px; background: var(--b-light-back);}
+.cat .step-optional { margin-top: 8px; border-style: dashed; border-color: var(--b-light-line); background: #fff;}
 .cat .step-optional-label { color: var(--mut); font-size: 12px; font-weight: 600; }
+
+
+
 .cat .mini-btn { height: 26px; padding: 0 9px; border: 1px solid #cfd4dc; border-radius: 6px; background: #fff; color: #374151; font-size: 12px; font-weight: 600; cursor: pointer; }
-.cat .mini-btn:hover:not(:disabled) { border-color: var(--brand); color: var(--brand); }
+.cat .mini-btn:hover:disabled { border-color: var(--b-light-line-hover); color: #374151; }
+.cat .mini-btn:hover:not(:disabled) { border-color: var(--b-light-line-hover); color: #374151; }
 .cat .mini-btn:disabled { opacity: .35; cursor: default; }
-.cat .mini-btn.added { background: var(--brand); border-color: var(--brand); color: #fff; }
+.cat .mini-btn.added { background: var(--b-dark-back); border-color: var(--b-dark-line); color: #fff; }
 .cat .step-optional .mini-btn { margin-top: 6px; }
+.cat .mini-btn.added:hover { color: #fff;}
 
 /* ---------- Sidebar ---------- */
 .cat .pathway-side {
@@ -333,6 +373,68 @@ classes: wide
 .cat .pathway-handle.left { top: calc(50% - 6px); left: -6px; }
 .cat .map-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; text-align: center; color: var(--mut); }
 
+
+.cat .pathway-text-box {
+    position: absolute;
+    width: 240px;
+    min-height: 70px;
+    padding: 14px 38px 14px 14px;
+    border: 1px solid #cfd4dc;
+    border-radius: 10px;
+    background: #fffdf5;
+    box-shadow: 0 3px 10px rgba(31,41,55,.08);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    pointer-events: auto;
+     z-index: 2;
+}
+
+.cat .pathway-text-box:hover {
+    border-color: var(--brand);
+}
+
+.cat .pathway-text-box.dragging {
+    cursor: grabbing;
+    box-shadow: 0 12px 25px rgba(31,41,55,.18);
+}
+
+.cat .pathway-text-box.selected {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(148,5,148,.15);
+}
+
+.cat .pathway-text-box-content {
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.45;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.cat .pathway-text-box-remove {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: var(--mut);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.cat .pathway-text-box-remove:hover {
+    background: #fee4e2;
+    color: #b42318;
+}
+.cat .pathway-node.selected {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(148,5,148,.15);
+}
 /* ---------- Misc ---------- */
 .cat .toast { position: fixed; left: 50%; bottom: 20px; z-index: 1000000; max-width: 90vw; padding: 10px 16px; border-radius: 8px; background: #1f2937; color: #fff; font-size: 14px; opacity: 0; transform: translate(-50%, 10px); pointer-events: none; transition: opacity .2s, transform .2s; }
 .cat .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -509,11 +611,25 @@ function connectionStyle(c) {
 function normaliseLayout(value) {
     const l = value && typeof value === "object" ? value : {};
     const connections = Array.isArray(l.connections) ? l.connections : [];
-    connections.forEach(c => { c.style = connectionStyle(c); });
+
+    connections.forEach(c => {
+        c.style = connectionStyle(c);
+    });
+
     return {
-        positions:   l.positions && typeof l.positions === "object" ? l.positions : {},
+        positions: l.positions && typeof l.positions === "object"
+            ? l.positions
+            : {},
+
         connections: connections,
-        notes:       l.notes && typeof l.notes === "object" ? l.notes : {}
+
+        notes: l.notes && typeof l.notes === "object"
+            ? l.notes
+            : {},
+
+        textBoxes: Array.isArray(l.textBoxes)
+            ? l.textBoxes
+            : []
     };
 }
 
@@ -602,13 +718,12 @@ function escapeHtml(value) {
 }
 
 const FORMATS = {
-    "Online (self-service)": { label: "On-demand",           cls: "b-demand" },
-    "Scheduled (online)":    { label: "Live online",         cls: "b-online" },
-    "Scheduled (hybrid)":    { label: "Hybrid",              cls: "b-person" },
-    "Scheduled (in-person)": { label: "In person",           cls: "b-person" },
-    "Scheduled (in person)": { label: "In person",           cls: "b-person" },
-    "Upcoming":              { label: "Upcoming",            cls: "b-other" },
-    "Other":                 { label: "Other",               cls: "b-other" }
+    "Online (self-service)": { label: "On-demand",             cls: "b-demand" },
+    "Scheduled (online)":    { label: "Scheduled (online)",    cls: "b-online" },
+    "Scheduled (hybrid)":    { label: "Scheduled (hybrid)",    cls: "b-person" },
+    "Scheduled (in-person)": { label: "Scheduled (in-person)", cls: "b-person" },
+    "Upcoming":              { label: "Upcoming",              cls: "b-other" },
+    "Other":                 { label: "Other",                 cls: "b-other" }
 };
 
 const formatLabel = f => (FORMATS[f] || {}).label || f;
@@ -788,16 +903,29 @@ function createCuratedStep(step, number) {
     li.innerHTML = `
         <span class="step-dot">${number}</span>
         <div class="step-body">
-            ${titleHtml(course, "step-title")}
-            <div class="step-sub">${escapeHtml([course.organisation, plainMeta(course)].filter(Boolean).join(" · "))}</div>
-            ${step.note ? `<div class="step-note">${escapeHtml(step.note)}</div>` : ""}
+            <div class="step-course">
+                ${titleHtml(course, "step-title")}
+                <div class="step-sub">${escapeHtml([course.organisation, plainMeta(course)].filter(Boolean).join(" · "))}</div>
+                ${step.note ? `<div class="step-note">${escapeHtml(step.note)}</div>` : ""}
+                <button type="button" class="mini-btn" data-course-id="${escapeHtml(step.id)}">+ Add</button>
+            </div>
         </div>
     `;
+
+    li.querySelector(".mini-btn").addEventListener("click", function () {
+        if (isCourseInPathway(course)) {
+            removeFromPathway(course);
+        }
+        else {
+            addToPathway(course, step.note);
+        }
+    });
 
     step.spinoffs.forEach(spinoff => {
 
         const box = document.createElement("div");
-        box.className = "step-optional";
+        box.className = "step-course step-optional";
+
         box.innerHTML = `
             <div class="step-optional-label">Optional</div>
             ${titleHtml(spinoff.course, "step-title")}
@@ -807,8 +935,12 @@ function createCuratedStep(step, number) {
         `;
 
         box.querySelector("button").addEventListener("click", function () {
-            if (isCourseInPathway(spinoff.course)) { removeFromPathway(spinoff.course); }
-            else { addToPathway(spinoff.course, spinoff.note, step.id); }
+            if (isCourseInPathway(spinoff.course)) {
+                removeFromPathway(spinoff.course);
+            }
+            else {
+                addToPathway(spinoff.course, spinoff.note, step.id);
+            }
         });
 
         li.querySelector(".step-body").appendChild(box);
@@ -816,7 +948,6 @@ function createCuratedStep(step, number) {
     });
 
     return li;
-
 }
 
 function renderCuratedPathways() {
@@ -852,8 +983,8 @@ function renderCuratedPathways() {
                 <span class="cur-loaded"> · ✓ In your pathway</span>
             </p>
             <div class="cur-actions">
-                <button type="button" class="cat-btn cat-btn-primary cur-use" ${count ? "" : "disabled"}>Use pathway</button>
-                <button type="button" class="cat-btn cur-add" ${count ? "" : "disabled"}>Add to mine</button>
+                <button type="button" class="cat-btn cat-btn-secondary cur-use" ${count ? "" : "disabled"}>Use pathway</button>
+                <button type="button" class="cat-btn cat-btn-third cur-add" ${count ? "" : "disabled"}>Add to mine</button>
             </div>
             <details class="cur-route">
                 <summary>View the route</summary>
@@ -1136,7 +1267,7 @@ function updateCourseStates() {
         step.classList.toggle("in-pathway", pathwayIds.includes(step.dataset.courseId));
     });
 
-    curatedGrid.querySelectorAll(".step-optional .mini-btn").forEach(button => {
+    curatedGrid.querySelectorAll(".step-course .mini-btn, .step-body > .mini-btn").forEach(button => {
         const added = pathwayIds.includes(button.dataset.courseId);
         button.classList.toggle("added", added);
         button.textContent = added ? "✓ In pathway" : "+ Add";
@@ -1360,9 +1491,49 @@ const ARROW_DEFS = `
 
 let pViewport = null, pWorld = null, pNodes = null, pSvg = null;
 let pZoom = 1, pPanX = 0, pPanY = 0;
-const P_MIN = 0.3, P_MAX = 2.5, P_STEP = 1.2;
+const P_MIN = 0.05, P_MAX = 2.5, P_STEP = 1.2;
 let panning = false, panSX = 0, panSY = 0, panOX = 0, panOY = 0;
 let mapNeedsFit = true;
+const selectedNodeIds = new Set();
+
+function clearNodeSelection() {
+    selectedNodeIds.clear();
+
+    if (pNodes) {
+        pNodes.querySelectorAll(".pathway-node.selected").forEach(node => {
+            node.classList.remove("selected");
+        });
+    }
+}
+
+function selectNode(id, additive) {
+
+    if (!additive) {
+        clearNodeSelection();
+    }
+
+    if (selectedNodeIds.has(id)) {
+        selectedNodeIds.delete(id);
+    }
+    else {
+        selectedNodeIds.add(id);
+    }
+
+    updateNodeSelectionUI();
+}
+
+function updateNodeSelectionUI() {
+
+    if (!pNodes) { return; }
+
+    pNodes.querySelectorAll(".pathway-node").forEach(node => {
+        node.classList.toggle(
+            "selected",
+            selectedNodeIds.has(node.dataset.courseId)
+        );
+    });
+
+}
 
 function createCanvas() {
 
@@ -1411,13 +1582,25 @@ function toWorld(event) {
 }
 
 function startPan(event) {
-    if (event.target.closest(".pathway-node, button, a, .pathway-line-hit")) { return; }
+
+    if (event.target.closest(".pathway-node, .pathway-text-box, button, a, .pathway-line-hit")) {
+        return;
+    }
+
+    clearNodeSelection();
+
     event.preventDefault();
+
     panning = true;
-    panSX = event.clientX; panSY = event.clientY; panOX = pPanX; panOY = pPanY;
+    panSX = event.clientX;
+    panSY = event.clientY;
+    panOX = pPanX;
+    panOY = pPanY;
+
     pViewport.classList.add("is-panning");
     pViewport.setPointerCapture(event.pointerId);
 }
+
 
 function movePan(event) {
     if (!panning) { return; }
@@ -1586,8 +1769,17 @@ function renderMap() {
         return;
     }
 
-    pathwayIds.forEach((id, index) => { if (courseLookup[id]) { createNode(courseLookup[id], index); } });
-    savePathway();
+pathwayIds.forEach((id, index) => {
+    if (courseLookup[id]) {
+        createNode(courseLookup[id], index);
+    }
+});
+
+pathwayLayout.textBoxes.forEach(box => {
+    createTextBox(box);
+});
+
+savePathway();
 
     requestAnimationFrame(function () {
         drawConnections();
@@ -1633,55 +1825,142 @@ function createNode(course, index) {
         });
     });
 
-    node.addEventListener("pointerdown", function (event) {
-        if (event.target.closest(".pathway-handle, .pathway-node-remove")) { return; }
-        startNodeDrag(event, node);
+node.addEventListener("pointerdown", function (event) {
+
+    if (event.target.closest(".pathway-handle, .pathway-node-remove, a")) {
+        return;
+    }
+
+    if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        event.stopPropagation();
+        selectNode(id, true);
+        return;
+    }
+
+    if (!selectedNodeIds.has(id)) {
+        clearNodeSelection();
+        selectNode(id, false);
+    }
+
+    startNodeDrag(event, node);
+});
+
+}
+
+
+
+
+function createTextBox(data) {
+
+    const box = document.createElement("div");
+
+    box.className = "pathway-text-box";
+    box.dataset.textBoxId = data.id;
+
+    box.style.left = `${data.x}px`;
+    box.style.top = `${data.y}px`;
+
+    box.innerHTML = `
+        <button
+            type="button"
+            class="pathway-text-box-remove"
+            title="Delete text box"
+            aria-label="Delete text box"
+        >×</button>
+
+        <div class="pathway-text-box-content"></div>
+    `;
+
+    box.querySelector(".pathway-text-box-content").textContent =
+        data.text || "Text";
+
+    pNodes.appendChild(box);
+
+    box.querySelector(".pathway-text-box-remove").addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const before = snapshotState();
+
+        pathwayLayout.textBoxes =
+            pathwayLayout.textBoxes.filter(item => item.id !== data.id);
+
+        pushHistory(before);
+
+        savePathway();
+        renderMap();
+
+    });
+
+    box.addEventListener("pointerdown", function (event) {
+
+        if (event.target.closest(".pathway-text-box-remove")) {
+            return;
+        }
+
+        startTextBoxDrag(event, box, data.id);
+
     });
 
 }
 
-function startNodeDrag(event, node) {
+
+function startTextBoxDrag(event, box, id) {
 
     event.preventDefault();
     event.stopPropagation();
 
-    const id = node.dataset.courseId;
-    const pos = pathwayLayout.positions[id] || { x: 0, y: 0 };
-    const sw = toWorld(event);
-    const ox = sw.x - pos.x, oy = sw.y - pos.y;
-    const sx = event.clientX, sy = event.clientY;
+    const data = pathwayLayout.textBoxes.find(item => item.id === id);
+
+    if (!data) { return; }
+
+    const startWorld = toWorld(event);
+
+    const startX = data.x;
+    const startY = data.y;
+
+    const sx = event.clientX;
+    const sy = event.clientY;
+
     const before = snapshotState();
+
     let moved = false;
 
-    node.classList.add("dragging");
+    box.classList.add("dragging");
 
     function move(e) {
 
-        if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 4) { return; }
+        if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 4) {
+            return;
+        }
+
         moved = true;
 
-        const w = toWorld(e);
-        const x = w.x - ox, y = w.y - oy;
+        const currentWorld = toWorld(e);
 
-        node.style.left = x + "px";
-        node.style.top = y + "px";
-        pathwayLayout.positions[id] = { x: x, y: y };
-        drawConnections();
+        const dx = currentWorld.x - startWorld.x;
+        const dy = currentWorld.y - startWorld.y;
+
+        data.x = startX + dx;
+        data.y = startY + dy;
+
+        box.style.left = `${data.x}px`;
+        box.style.top = `${data.y}px`;
 
     }
 
     function stop() {
 
-        node.classList.remove("dragging");
+        box.classList.remove("dragging");
+
         document.removeEventListener("pointermove", move);
         document.removeEventListener("pointerup", stop);
         document.removeEventListener("pointercancel", stop);
 
         if (moved) {
             pushHistory(before);
-            const suppress = e => { e.preventDefault(); e.stopPropagation(); };
-            node.addEventListener("click", suppress, true);
-            setTimeout(() => node.removeEventListener("click", suppress, true), 0);
         }
 
         savePathway();
@@ -1692,6 +1971,121 @@ function startNodeDrag(event, node) {
     document.addEventListener("pointerup", stop);
     document.addEventListener("pointercancel", stop);
 
+}
+
+function startNodeDrag(event, node) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const id = node.dataset.courseId;
+
+    if (!selectedNodeIds.has(id)) {
+        clearNodeSelection();
+        selectNode(id, false);
+    }
+
+    const movingIds = [...selectedNodeIds];
+
+    const startWorld = toWorld(event);
+
+    const startPositions = {};
+
+    movingIds.forEach(selectedId => {
+        const pos = pathwayLayout.positions[selectedId] || { x: 0, y: 0 };
+
+        startPositions[selectedId] = {
+            x: pos.x,
+            y: pos.y
+        };
+    });
+
+    const sx = event.clientX;
+    const sy = event.clientY;
+
+    const before = snapshotState();
+    let moved = false;
+
+    movingIds.forEach(selectedId => {
+        const selectedNode = nodeEl(selectedId);
+        if (selectedNode) {
+            selectedNode.classList.add("dragging");
+        }
+    });
+
+    function move(e) {
+
+        if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) < 4) {
+            return;
+        }
+
+        moved = true;
+
+        const currentWorld = toWorld(e);
+
+        const dx = currentWorld.x - startWorld.x;
+        const dy = currentWorld.y - startWorld.y;
+
+        movingIds.forEach(selectedId => {
+
+            const start = startPositions[selectedId];
+
+            const x = start.x + dx;
+            const y = start.y + dy;
+
+            pathwayLayout.positions[selectedId] = {
+                x: x,
+                y: y
+            };
+
+            const selectedNode = nodeEl(selectedId);
+
+            if (selectedNode) {
+                selectedNode.style.left = x + "px";
+                selectedNode.style.top = y + "px";
+            }
+
+        });
+
+        drawConnections();
+    }
+
+    function stop() {
+
+        movingIds.forEach(selectedId => {
+            const selectedNode = nodeEl(selectedId);
+
+            if (selectedNode) {
+                selectedNode.classList.remove("dragging");
+            }
+        });
+
+        document.removeEventListener("pointermove", move);
+        document.removeEventListener("pointerup", stop);
+        document.removeEventListener("pointercancel", stop);
+
+        if (moved) {
+            pushHistory(before);
+
+            const suppress = e => {
+                e.preventDefault();
+                e.stopPropagation();
+            };
+
+            node.addEventListener("click", suppress, true);
+
+            setTimeout(() => {
+                node.removeEventListener("click", suppress, true);
+            }, 0);
+        }
+
+        savePathway();
+        updateNodeSelectionUI();
+    }
+
+    document.addEventListener("pointermove", move);
+    document.addEventListener("pointerup", stop);
+    document.addEventListener("pointercancel", stop);
 }
 
 let activeConnection = null;
