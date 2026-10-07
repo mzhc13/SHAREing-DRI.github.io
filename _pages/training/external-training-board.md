@@ -8,6 +8,8 @@ classes: wide
 <header class="cat-hero">
 <div class="hero-text">
 <h1>External Training Catalogue</h1>
+
+
 <p>Discover external training opportunities in HPC, AI, research software engineering, programming, performance optimisation, and related topics. Add courses to build your own learning pathway, or start from a curated one.</p>
 </div>
 <ul class="hero-stats" id="hero-stats"></ul>
@@ -51,6 +53,10 @@ classes: wide
 <button type="button" id="pathway-zoom-in" class="cat-btn cat-btn-icon" aria-label="Zoom in">+</button>
 <button type="button" id="pathway-reset-view" class="cat-btn">Fit to view</button>
 <button type="button" id="auto-arrange" class="cat-btn" title="Put all courses back in a single row">Auto-arrange</button>
+<button type="button" id="add-text" class="cat-btn" title="Add a text label">Text</button>
+<button type="button" id="add-note" class="cat-btn" title="Add a sticky note">Sticky note</button>
+<button type="button" id="add-circle" class="cat-btn" title="Add a circle to highlight things">Circle</button>
+<button type="button" id="undo-map" class="cat-btn" disabled title="Undo the most recent change">Undo</button>
 </div>
 
 <div class="map-legend">
@@ -60,7 +66,7 @@ classes: wide
 </div>
 <p class="map-hint">
     Drag cards to arrange them. Ctrl/Cmd-click to select several cards and move them together.
-    Drag from a card's dots to connect two courses. Click a connector to make it optional, and click again to remove it.
+    Drag from a card's dots to connect two courses. Click a connector to make it optional, and click again to remove it. Double-click text or notes to edit them; drag a circle by its ✥ grip and resize from the corner.
 </p>
 <div id="pathway-map" class="pathway-map"></div>
 </section>
@@ -137,9 +143,20 @@ classes: wide
 .cat .cat-hero h1 { font-size: 30px; line-height: 1.2; font-weight: 700; color: #fff; margin-bottom: 8px; }
 .cat .cat-hero p { color: #e6d3ee; font-size: 16px; }
 .cat .hero-stats { display: flex; gap: 32px; }
-.cat .hero-stats li { text-align: left; }
-.cat .hero-stats strong { display: block; font-size: 30px; line-height: 1.1; font-weight: 700; color: #fff; }
-.cat .hero-stats span { font-size: 13px; color: #d9c0e6; }
+.cat .hero-stats li { text-align: center; }
+.cat .hero-stats strong {
+    display: block;
+    font-size: 40px;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #fff;
+}
+
+.cat .hero-stats span {
+    display: block;
+    font-size: 20px;
+    color: #d9c0e6;
+}
 
 /* ---------- Buttons ---------- */
 .cat .cat-btn {
@@ -435,6 +452,54 @@ classes: wide
     border-color: var(--brand);
     box-shadow: 0 0 0 3px rgba(148,5,148,.15);
 }
+/* ---------- Annotations + optional items ---------- */
+.cat .map-zoom .cat-btn { height: 34px; }
+.cat .pathway-text-box.is-text { background: transparent; border: 1px dashed transparent; box-shadow: none; min-height: 40px; }
+.cat .pathway-text-box.is-text:hover { border-color: var(--brand); }
+.cat .is-text .pathway-text-box-content { font-size: 16px; font-weight: 600; }
+.cat .pathway-text-box.is-note { border: 0; border-radius: 3px; box-shadow: 0 6px 14px rgba(31,41,55,.2); overflow: auto; }
+.cat .pathway-text-box.is-circle { background: transparent; border: 3px solid #d92d20; border-radius: 50%; box-shadow: none; padding: 0; pointer-events: auto;}
+.cat .is-circle .pathway-text-box-remove { top: -12px; right: -12px; pointer-events: auto; }
+.cat .ann-grip { position: absolute; top: -14px; left: calc(50% - 14px); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: 1px solid #cfd4dc; border-radius: 50%; background: #fff; color: var(--mut); font-size: 14px; cursor: grab; pointer-events: auto; }
+.cat .ann-resize { position: absolute; right: -6px; bottom: -6px; width: 14px; height: 14px; border-radius: 3px; background: var(--brand); cursor: nwse-resize; opacity: 0; pointer-events: auto; }
+.cat .pathway-text-box:hover .ann-resize, .cat .is-circle .ann-resize { opacity: 1; }
+.cat .pathway-item.is-optional { border-style: dashed; background: #fafafb; }
+.cat .pathway-item.is-optional .pathway-number { width: auto; min-width: 26px; padding: 0 6px; border-radius: 13px; font-size: 11px; background: #fff; border: 1px dashed var(--brand); }
+
+/* ---------- Annotation styling v2 ---------- */
+.cat .ann-tools { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); display: none; align-items: center; gap: 5px; padding: 5px 8px; border: 1px solid #d8dee6; border-radius: 16px; background: #fff; box-shadow: 0 4px 12px rgba(31,41,55,.15); z-index: 20; pointer-events: auto; white-space: nowrap; }
+.cat .ann-tools::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 12px; }
+.cat .pathway-text-box:hover .ann-tools, .cat .pathway-text-box.selected .ann-tools, .cat .pathway-text-box:focus-within .ann-tools { display: flex; }
+.cat .ann-sw { width: 18px; height: 18px; padding: 0; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #cfd4dc; cursor: pointer; transition: transform .1s; }
+.cat .ann-sw:hover { transform: scale(1.18); }
+.cat .ann-sw.on { box-shadow: 0 0 0 2px var(--ink); }
+.cat .ann-tools .ann-grip { position: static; width: 22px; height: 22px; margin-right: 4px; border: 0; background: #f1f5f9; }
+.cat .pathway-text-box-content:empty::before { content: attr(data-placeholder); opacity: .45; }
+.cat .pathway-text-box-content:focus { outline: none; }
+.cat .is-note .pathway-text-box-remove, .cat .is-text .pathway-text-box-remove { opacity: 0; }
+.cat .is-note:hover .pathway-text-box-remove, .cat .is-text:hover .pathway-text-box-remove, .cat .is-note.selected .pathway-text-box-remove { opacity: 1; }
+
+/* sticky note */
+.cat .pathway-text-box.is-note {
+    --ann: #fff3a3; background-color: var(--ann);
+    background-image: linear-gradient(180deg, rgba(0,0,0,.10) 0, rgba(0,0,0,0) 22px);
+    border: 0; border-radius: 2px 2px 14px 2px; padding: 26px 14px 16px; overflow: visible;
+    transform: rotate(var(--rot, 0deg)); transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 1px 1px rgba(0,0,0,.14), 0 10px 18px -8px rgba(0,0,0,.4);
+}
+.cat .pathway-text-box.is-note:hover, .cat .pathway-text-box.is-note:focus-within { transform: rotate(0deg) translateY(-2px); box-shadow: 0 1px 1px rgba(0,0,0,.14), 0 16px 24px -8px rgba(0,0,0,.45); }
+.cat .pathway-text-box.is-note.selected { box-shadow: 0 0 0 3px rgba(148,5,148,.3), 0 10px 18px -8px rgba(0,0,0,.4); }
+.cat .pathway-text-box.is-note::after { content: ""; position: absolute; right: 0; bottom: 0; width: 22px; height: 22px; border-radius: 0 0 14px 0; background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,.14) 50%, rgba(255,255,255,.5) 100%); pointer-events: none; }
+.cat .is-note .pathway-text-box-content { height: 100%; overflow: auto; color: #3a3320; font-size: 15px; line-height: 1.4; }
+
+/* text label + circle take their colour from --ann */
+.cat .pathway-text-box.is-text { --ann: #243855; }
+.cat .is-text .pathway-text-box-content { color: var(--ann); }
+.cat .pathway-text-box.is-circle { --ann: #d92d20; border-color: var(--ann); }
+
+/* sidebar */
+.cat .pathway-item-actions { flex-wrap: wrap; }
+
 /* ---------- Misc ---------- */
 .cat .toast { position: fixed; left: 50%; bottom: 20px; z-index: 1000000; max-width: 90vw; padding: 10px 16px; border-radius: 8px; background: #1f2937; color: #fff; font-size: 14px; opacity: 0; transform: translate(-50%, 10px); pointer-events: none; transition: opacity .2s, transform .2s; }
 .cat .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -608,6 +673,12 @@ function connectionStyle(c) {
     return c.type === "spinoff" ? "dashed" : "solid";
 }
 
+/* A course is optional when every connection leading to it is dashed */
+function isOptional(id) {
+    const incoming = pathwayLayout.connections.filter(c => c.to === id);
+    return incoming.length > 0 && incoming.every(c => connectionStyle(c) === "dashed");
+}
+
 function normaliseLayout(value) {
     const l = value && typeof value === "object" ? value : {};
     const connections = Array.isArray(l.connections) ? l.connections : [];
@@ -670,6 +741,7 @@ function pushHistory(snapshot) {
 
 function updateUndoUI() {
     undoButton.disabled = !history.length;
+    const um = $("undo-map"); if (um) { um.disabled = !history.length; }
     undoButton.title = history.length ? "Undo the most recent change (Ctrl/⌘ + Z)" : "Nothing to undo";
 }
 
@@ -939,6 +1011,7 @@ function createCuratedStep(step, number) {
                 removeFromPathway(spinoff.course);
             }
             else {
+                if (!isCourseInPathway(step.course)) { addToPathway(step.course, step.note); }
                 addToPathway(spinoff.course, spinoff.note, step.id);
             }
         });
@@ -1044,7 +1117,7 @@ groups.forEach(g => {
 (function () {
     const providers = new Set(courses.map(c => c.organisation).filter(Boolean)).size;
     const topics = groups.reduce((n, g) => n + g.topics.length, 0);
-    $("hero-stats").innerHTML = [[courses.length, "courses"], [providers, "providers"], [topics, "topics"]]
+    $("hero-stats").innerHTML = [[courses.length, "courses"], [topics, "topics"]]
         .map(s => `<li><strong>${s[0]}</strong><span>${s[1]}</span></li>`).join("");
 })();
 
@@ -1331,7 +1404,8 @@ function updatePathwayUI() {
 
     $("pathway-count").textContent = count;
     $("pathway-fab-count").textContent = count;
-    $("pathway-summary-count").textContent = `${count} ${count === 1 ? "course" : "courses"}`;
+    const optCount = pathwayIds.filter(isOptional).length, reqCount = count - optCount;
+    $("pathway-summary-count").textContent = `${reqCount} ${reqCount === 1 ? "course" : "courses"}` + (optCount ? ` + ${optCount} optional` : "");
 
     pathwayEmpty.hidden = count > 0;
     pathwayContent.hidden = count === 0;
@@ -1356,20 +1430,25 @@ function createPathwayListItem(course, id, index) {
 
     const item = document.createElement("div");
     item.className = "pathway-item";
+    const opt = isOptional(id);
+    const canToggle = opt || pathwayLayout.connections.some(c => c.to === id) || pathwayIds.slice(0, index).some(i => !isOptional(i));
+    const number = opt ? null : pathwayIds.slice(0, index + 1).filter(i => !isOptional(i)).length;
+    if (opt) { item.classList.add("is-optional"); }
     item.draggable = true;
     item.dataset.courseId = id;
 
     const note = pathwayLayout.notes[id];
 
     item.innerHTML = `
-        <div class="pathway-number">${index + 1}</div>
+        <div class="pathway-number">${number === null ? "opt" : number}</div>
         <div class="pathway-item-body">
             ${titleHtml(course, "pathway-item-title")}
-            <div class="pathway-item-sub">${escapeHtml([course.organisation, plainMeta(course)].filter(Boolean).join(" · "))}</div>
+            <div class="pathway-item-sub">${escapeHtml([opt ? "Optional" : "", course.organisation, plainMeta(course)].filter(Boolean).join(" · "))}</div>
             ${note ? `<div class="pathway-item-note">${escapeHtml(note)}</div>` : ""}
             <div class="pathway-item-actions">
                 <button type="button" class="mini-btn" data-dir="up" aria-label="Move up" ${index === 0 ? "disabled" : ""}>↑</button>
                 <button type="button" class="mini-btn" data-dir="down" aria-label="Move down" ${index === pathwayIds.length - 1 ? "disabled" : ""}>↓</button>
+                <button type="button" class="mini-btn" data-toggle-opt ${canToggle ? "" : "disabled"} title="${opt ? "Make this a required course" : "Make this an optional course"}">${opt ? "Make required" : "Make optional"}</button>
                 <button type="button" class="mini-btn remove">Remove</button>
             </div>
         </div>
@@ -1377,6 +1456,7 @@ function createPathwayListItem(course, id, index) {
 
     item.querySelectorAll("[data-dir]").forEach(b => b.addEventListener("click", () => movePathwayItem(id, b.dataset.dir)));
     item.querySelector(".remove").addEventListener("click", () => removeFromPathway(course));
+    item.querySelector("[data-toggle-opt]").addEventListener("click", () => setOptional(id, !opt));
 
     item.addEventListener("dragstart", function (event) {
         draggedPathwayId = id;
@@ -1408,6 +1488,35 @@ function createPathwayListItem(course, id, index) {
     });
 
     return item;
+
+}
+
+/* Optional = every connection leading into the course is dashed */
+function setOptional(id, optional) {
+
+    const incoming = pathwayLayout.connections.filter(c => c.to === id);
+    let parent = null;
+
+    if (optional && !incoming.length) {
+        const index = pathwayIds.indexOf(id);
+        for (let i = index - 1; i >= 0; i--) {
+            if (!isOptional(pathwayIds[i])) { parent = pathwayIds[i]; break; }
+        }
+        if (!parent) { toast("Add an earlier course to branch this one from"); return; }
+    }
+
+    pushHistory();
+
+    incoming.forEach(c => {
+        if (optional) { c.style = "dashed"; c.type = "spinoff"; }
+        else { c.style = "solid"; delete c.type; }
+    });
+
+    if (parent) { pathwayLayout.connections.push({ from: parent, to: id, type: "spinoff", style: "dashed" }); }
+
+    savePathway();
+    refreshPathwayViews();
+    toast(optional ? "Marked as optional" : "Marked as required");
 
 }
 
@@ -1498,6 +1607,7 @@ const selectedNodeIds = new Set();
 
 function clearNodeSelection() {
     selectedNodeIds.clear();
+    if (pNodes) { pNodes.querySelectorAll(".pathway-text-box.selected").forEach(el => el.classList.remove("selected")); }
 
     if (pNodes) {
         pNodes.querySelectorAll(".pathway-node.selected").forEach(node => {
@@ -1764,7 +1874,7 @@ function renderMap() {
 
     createCanvas();
 
-    if (!pathwayIds.length) {
+    if (!pathwayIds.length && !pathwayLayout.textBoxes.length) {
         mapHost.insertAdjacentHTML("beforeend", `<div class="map-empty"><div><p class="empty-title">Your pathway is empty</p><p>Go to the catalogue and press + on the courses you want to add.</p></div></div>`);
         return;
     }
@@ -1851,60 +1961,165 @@ node.addEventListener("pointerdown", function (event) {
 
 
 
+const ANN_PALETTES = {
+    note:   ["#fff3a3", "#ffd6e7", "#cfeeff", "#d9f7be", "#e5d4ff", "#ffd9a8"],
+    text:   ["#243855", "#940594", "#d92d20", "#0b6b4d", "#1d4ed8", "#9a5b00"],
+    circle: ["#d92d20", "#940594", "#1d4ed8", "#0b6b4d", "#f59e0b", "#243855"]
+};
+
+function annSize(b) {
+    const k = b.kind || "text";
+    return { w: b.w || (k === "circle" ? 220 : k === "note" ? 200 : 240), h: b.h || (k === "circle" ? 140 : k === "note" ? 190 : 70) };
+}
+
+function editAnnotation(el) {
+    el.contentEditable = "plaintext-only";
+    if (el.contentEditable !== "plaintext-only") { el.contentEditable = "true"; }
+    el.focus();
+    const range = document.createRange(), sel = window.getSelection();
+    range.selectNodeContents(el);
+    sel.removeAllRanges();
+    sel.addRange(range);
+}
+
 function createTextBox(data) {
 
+    const kind = data.kind || "text", size = annSize(data), palette = ANN_PALETTES[kind] || ANN_PALETTES.text;
     const box = document.createElement("div");
 
-    box.className = "pathway-text-box";
+    box.className = "pathway-text-box is-" + kind;
     box.dataset.textBoxId = data.id;
+    box.style.left = data.x + "px";
+    box.style.top = data.y + "px";
+    box.style.width = size.w + "px";
+    if (kind === "circle" || kind === "note" || data.h) { box.style.height = size.h + "px"; }
+    if (kind === "note") { box.style.setProperty("--rot", (data.rot || 0) + "deg"); }
 
-    box.style.left = `${data.x}px`;
-    box.style.top = `${data.y}px`;
+    const swatches = palette.map(c => `<button type="button" class="ann-sw" data-colour="${c}" style="background:${c}" aria-label="Colour ${c}"></button>`).join("");
 
     box.innerHTML = `
-        <button
-            type="button"
-            class="pathway-text-box-remove"
-            title="Delete text box"
-            aria-label="Delete text box"
-        >×</button>
-
-        <div class="pathway-text-box-content"></div>
-    `;
-
-    box.querySelector(".pathway-text-box-content").textContent =
-        data.text || "Text";
+        <button type="button" class="pathway-text-box-remove" title="Delete" aria-label="Delete">×</button>
+        <div class="ann-tools">${kind === "circle" ? '<span class="ann-grip" title="Drag to move">✥</span>' : ""}${swatches}</div>
+        ${kind === "circle" ? "" : '<div class="pathway-text-box-content" data-placeholder="Double-click to write"></div>'}
+        <div class="ann-resize" title="Drag to resize"></div>`;
 
     pNodes.appendChild(box);
 
-    box.querySelector(".pathway-text-box-remove").addEventListener("click", function (event) {
+    const applyColour = function () {
+        const c = data.colour || palette[0];
+        box.style.setProperty("--ann", c);
+        box.querySelectorAll(".ann-sw").forEach(b => b.classList.toggle("on", b.dataset.colour === c));
+    };
+    applyColour();
 
+    box.querySelector(".ann-tools").addEventListener("click", function (event) {
+        const sw = event.target.closest(".ann-sw");
+        if (!sw) { return; }
+        const before = snapshotState();
+        data.colour = sw.dataset.colour;
+        pushHistory(before);
+        savePathway();
+        applyColour();
+    });
+
+    const content = box.querySelector(".pathway-text-box-content");
+
+    if (content) {
+        content.textContent = data.text || "";
+        content.addEventListener("dblclick", () => editAnnotation(content));
+        content.addEventListener("keydown", function (e) { if (e.key === "Escape") { content.blur(); } });
+        content.addEventListener("blur", function () {
+            content.contentEditable = "false";
+            const t = content.innerText.trim();
+            if (t === (data.text || "")) { return; }
+            const before = snapshotState();
+            data.text = t;
+            pushHistory(before);
+            savePathway();
+        });
+    }
+
+    box.querySelector(".pathway-text-box-remove").addEventListener("click", function (event) {
         event.preventDefault();
         event.stopPropagation();
-
         const before = snapshotState();
-
-        pathwayLayout.textBoxes =
-            pathwayLayout.textBoxes.filter(item => item.id !== data.id);
-
+        pathwayLayout.textBoxes = pathwayLayout.textBoxes.filter(item => item.id !== data.id);
         pushHistory(before);
-
         savePathway();
         renderMap();
-
     });
 
     box.addEventListener("pointerdown", function (event) {
-
-        if (event.target.closest(".pathway-text-box-remove")) {
-            return;
-        }
-
+        if (event.target.closest(".pathway-text-box-remove, .ann-resize, .ann-sw")) { return; }
+        if (content && content.isContentEditable) { return; }
+        if (kind === "circle" && !event.target.closest(".ann-grip")) { return; }
+        pNodes.querySelectorAll(".pathway-text-box.selected").forEach(el => el.classList.remove("selected"));
+        box.classList.add("selected");
         startTextBoxDrag(event, box, data.id);
+    });
 
+    box.querySelector(".ann-resize").addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const start = toWorld(event), s = annSize(data), before = snapshotState();
+        let moved = false;
+        const move = function (e) {
+            const p = toWorld(e);
+            moved = true;
+            data.w = Math.max(100, s.w + p.x - start.x);
+            data.h = Math.max(60, s.h + p.y - start.y);
+            box.style.width = data.w + "px";
+            box.style.height = data.h + "px";
+        };
+        const stop = function () {
+            document.removeEventListener("pointermove", move);
+            document.removeEventListener("pointerup", stop);
+            if (moved) { pushHistory(before); savePathway(); }
+        };
+        document.addEventListener("pointermove", move);
+        document.addEventListener("pointerup", stop);
     });
 
 }
+
+function addAnnotation(kind) {
+
+    if (!pViewport) { return; }
+
+    const r = pViewport.getBoundingClientRect();
+    const cx = (r.width / 2 - pPanX) / pZoom, cy = (r.height / 2 - pPanY) / pZoom;
+    const palette = ANN_PALETTES[kind];
+    const same = pathwayLayout.textBoxes.filter(b => (b.kind || "text") === kind).length;
+
+    const item = {
+        id: "a" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
+        kind: kind, x: cx - 100, y: cy - 90,
+        text: kind === "text" ? "Text" : "",
+        colour: palette[same % palette.length]
+    };
+    if (kind === "note") { item.rot = Math.round((Math.random() * 5 - 2.5) * 10) / 10; }
+    if (kind === "circle") { item.colour = palette[0]; }
+
+    pushHistory();
+    pathwayLayout.textBoxes.push(item);
+    savePathway();
+    renderMap();
+
+    const el = pNodes.querySelector(`[data-text-box-id="${item.id}"] .pathway-text-box-content`);
+    if (el) { editAnnotation(el); }
+
+}
+
+function annHtmlFor(b, ox, oy) {
+    const k = b.kind || "text", s = annSize(b), c = b.colour || (ANN_PALETTES[k] || ANN_PALETTES.text)[0];
+    const extra = k === "note" ? `background:${c};transform:rotate(${b.rot || 0}deg);` : k === "text" ? `color:${c};` : `border-color:${c};`;
+    return `<div class="ann ${k}" style="left:${b.x + ox}px;top:${b.y + oy}px;width:${s.w}px;height:${s.h}px;${extra}">${k === "circle" ? "" : escapeHtml(b.text || "")}</div>`;
+}
+
+$("add-text").addEventListener("click", () => addAnnotation("text"));
+$("add-note").addEventListener("click", () => addAnnotation("note"));
+$("add-circle").addEventListener("click", () => addAnnotation("circle"));
+$("undo-map").addEventListener("click", undoLastChange);
 
 
 function startTextBoxDrag(event, box, id) {
@@ -2132,6 +2347,7 @@ function finishConnection(event) {
     }
 
     activeConnection.temp.remove();
+    renderPathwayList();
     activeConnection = null;
     savePathway();
     drawConnections();
@@ -2145,6 +2361,7 @@ function cycleConnection(conn) {
 
     if (connectionStyle(conn) === "solid") { conn.style = "dashed"; }
     else { pathwayLayout.connections = pathwayLayout.connections.filter(c => c !== conn); }
+    renderPathwayList();
 
     savePathway();
     drawConnections();
@@ -2237,6 +2454,7 @@ function triggerHtmlDownload(html, filename) {
 
 function buildListDownloadHtml() {
 
+    let optN = 0;
     const rows = pathwayIds
         .filter(id => courseLookup[id])
         .map((id, index) => {
@@ -2246,7 +2464,7 @@ function buildListDownloadHtml() {
 
             return `
                 <article class="course">
-                    <div class="number">${index + 1}</div>
+                    <div class="number">${isOptional(id) ? "opt." : ++optN}</div>
                     <div>
                         <h2>${course.url ? `<a href="${escapeHtml(course.url)}">${escapeHtml(courseTitle(course))}</a>` : escapeHtml(courseTitle(course))}</h2>
                         ${course.organisation ? `<p>${escapeHtml(course.organisation)}</p>` : ""}
@@ -2277,9 +2495,11 @@ function buildMapDownloadHtml() {
     ids.forEach(id => getPosition(id, pathwayIds.indexOf(id)));
 
     const rects = ids.map(id => Object.assign({ id: id }, rectOf(id)));
+    const anns = pathwayLayout.textBoxes.map(b => Object.assign({}, b, annSize(b)));
+    const all = rects.concat(anns);
 
-    const minX = Math.min(...rects.map(r => r.x)), minY = Math.min(...rects.map(r => r.y));
-    const maxX = Math.max(...rects.map(r => r.x + r.w)), maxY = Math.max(...rects.map(r => r.y + r.h));
+    const minX = Math.min(...all.map(r => r.x)), minY = Math.min(...all.map(r => r.y));
+    const maxX = Math.max(...all.map(r => r.x + r.w)), maxY = Math.max(...all.map(r => r.y + r.h));
 
     const pad = 40, ox = pad - minX, oy = pad - minY;
     const W = (maxX - minX) + pad * 2, H = (maxY - minY) + pad * 2;
@@ -2314,13 +2534,14 @@ body{font-family:Arial,sans-serif;margin:40px;color:#1f2937;background:#f8f9fb}h
 .card{position:absolute;box-sizing:border-box;padding:14px 16px;border:1px solid #d8dee6;border-radius:12px;background:#fff;box-shadow:0 4px 12px rgba(31,41,55,.08)}
 .t{font-weight:700;font-size:.9rem;color:#1f2937;line-height:1.35}.t a{color:inherit;text-decoration:none}.t a:hover{text-decoration:underline}
 .o{margin-top:6px;font-size:.75rem;font-weight:700;color:#940594}.m{margin-top:6px;font-size:.75rem;color:#5b6472}
+.ann{position:absolute;box-sizing:border-box;padding:12px;white-space:pre-wrap;font-size:14px}.ann.text{padding:0;font-weight:600;font-size:16px}.ann.note{box-shadow:0 8px 16px -6px rgba(0,0,0,.4);font-family:"Segoe Print","Comic Sans MS",cursive;padding-top:24px;border-radius:2px 2px 14px 2px}.ann.circle{border:3px solid #d92d20;border-radius:50%}
 </style></head><body>
 <h1>My Learning Pathway – Map</h1>
 <div class="legend">
 <span><svg width="40" height="10"><line x1="1" y1="5" x2="39" y2="5" stroke="#940594" stroke-width="2.5" stroke-linecap="round"/></svg> Required</span>
 <span><svg width="40" height="10"><line x1="1" y1="5" x2="39" y2="5" stroke="#940594" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 5"/></svg> Optional</span>
 </div>
-<div class="wrap"><svg width="${W}" height="${H}">${ARROW_DEFS}${paths}</svg>${cards}</div>
+<div class="wrap"><svg width="${W}" height="${H}">${ARROW_DEFS}${paths}</svg>${cards}${anns.map(b => annHtmlFor(b, ox, oy)).join("")}</div>
 </body></html>`;
 
 }

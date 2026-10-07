@@ -37,11 +37,10 @@
   courses:
     - url: "https://librarycarpentry.org/lc-shell/"
     - url: "https://www.archer2.ac.uk/training/courses/240000-intro-hpc-self-service/"
+    - url: "https://shareing-dri.github.io/hpc-concepts-course/"
     - url: "https://training-academy.dirac.ac.uk/enrol/index.php?id=23"
     - url: "https://www.archer2.ac.uk/training/courses/210000-mpi-self-service/"
-      spinoffs:
-        - url: "https://www.archer2.ac.uk/training/courses/210000-openmp-self-service/"
-    - url: "https://shareing-dri.github.io/hpc-concepts-course/"
+    - url: "https://www.archer2.ac.uk/training/courses/210000-openmp-self-service/"
     - url: "https://www.vi-hps.org/training/tws/tuning-workshop-series.html"
 
 - id: hpc-track
